@@ -1,0 +1,189 @@
+import statistics
+
+import os
+import math
+import datetime
+import pickle
+import time
+import numpy as np
+import random as random
+from gurobipy import *
+from sklearn.preprocessing import StandardScaler
+import pandas as pd
+import scipy.stats as stats
+import random as random
+import matplotlib.pyplot as plt
+import xlsxwriter
+from openpyxl import load_workbook
+import warnings
+
+random.seed(1215)
+np.random.seed(1130)
+
+def fun_create_data_Theta_4_OutSam(
+
+    Theta,z_lower,z_upper,z_mean,sigma_insample,sigma_outofsample_1,sigma_outofsample_2,sigma_outofsample_3,sigma_outofsample_4,
+     out_of_sample_mean_scale_1, out_of_sample_mean_scale_2, out_of_sample_mean_scale_3,  out_of_sample_mean_scale_4
+    ):
+
+    from random import randrange
+    from random import choices
+    import random
+    sigma=sigma_insample
+    n_samples = 40000
+    norm_dist = []
+    z = np.empty([12, n_samples, len(z_mean)])
+    z_label=np.empty([1,n_samples,len(z_mean)])
+    z_outofsample_1=np.empty([1,n_samples,len(z_mean)])
+    z_outofsample_2=np.empty([1,n_samples,len(z_mean)])
+    z_outofsample_3=np.empty([1,n_samples,len(z_mean)])
+    z_outofsample_4=np.empty([1,n_samples,len(z_mean)])
+    #print(shape(z_label))
+    
+    for i in range(len(z_mean)):
+        dist = stats.truncnorm((z_lower[i] - z_mean[i]) / sigma, (z_upper[i] - z_mean[i]) / sigma, loc=z_mean[i], scale=sigma)
+        z[0, :, i] = dist.rvs(n_samples)
+        # 基于上一轮 z[n] 数据的均值和协方差矩阵创立的下一个 z[n+1]轮数据mb
+    #random_number=[0.6400332603024126, 0.10889302697429674, 0.20703258829759838, 0.23773608673695382, 0.2780381031114573, 0.4583126367564924, 0.21301422768790568, 0.1549053549691005, 0.8940854072452195, 0.7309504027753949]
+    random_number=[]
+    for n in range(10):
+        
+        
+        #my_number = random.choice((-1, 1))
+        randomnumber=random.random()*random.random()
+        # norm_dist stored the mean and covarance in 10's data set.
+        norm_dist.append((np.mean(z[n], axis=0)+Theta*randomnumber, np.cov(z[n], rowvar=0)))
+        #norm_dist.append((np.mean(z[n], axis=0)+Theta*random_number[n], np.cov(z[n], rowvar=0)))
+        random_number.append(randomnumber)
+        #print("random number in this case stage z["+str(n)+"],is"+ str(randomnumber) )
+        #recurrent_backup.append(randomnumber)
+        z[n+1] = np.random.multivariate_normal(norm_dist[n][0], norm_dist[n][1],n_samples)
+    
+
+    #print(random_number)
+    for n in range(10):
+        #internal_label=np.full([200,1],n).tolist()
+        #print(shape(internal_label))
+        #print(shape(np.random.multivariate_normal(norm_dist[n][0], norm_dist[n][1],n_samples//10)))
+        b=np.random.multivariate_normal(norm_dist[n][0], norm_dist[n][1],n_samples//1)
+        b=b.tolist()
+        
+        #print(b)
+        #b=pd.DataFrame(b)
+        #print("DataFrame:")
+        #print(b)
+        #print(shape(b))
+        for i in range(len(z_mean)):
+            b = np.array(b)
+            b = [t for t in b if t[i] >= z_lower[i] and t[i] <= z_upper[i]]
+            #print(shape(b))
+            #b=b[b[i+1]<=z_upper[i]][b[i+1]>=z_lower[i]]
+            #b=b.values.tolist()
+        #choices_b=choices(b,k=1000)
+        #print(choices_b)
+        index_list=[]
+        #print("len of b is -----",len(b))
+        for x in range(len(b)):
+            index_list.append(x) 
+            #print(len(b))
+            #print(x)
+            #print(b[48])
+        
+        #print((index_list))
+        
+        choices_index=choices(index_list,k=n_samples//10)
+        #print(type(choices_index))
+        #print(type(b[0]))
+        #c=np.array(c_internal[n])
+        #choices_index=choice_index_list[n]
+        d=[]
+        #print(len(choices_index))
+        for x in range(len(choices_index)):
+            d.append(b[choices_index[x]])
+        z_label[0, (n * n_samples // 10):(n * n_samples // 10 + n_samples //10)] =np.array(d)
+
+    for n in range(10):
+        
+        b=np.random.multivariate_normal(norm_dist[n][0] * out_of_sample_mean_scale_1, norm_dist[n][1]*sigma_outofsample_1,n_samples//1)
+        b=b.tolist()
+        for i in range(len(z_mean)):
+            b = np.array(b)
+            b = [t for t in b if t[i] >= z_lower[i] and t[i] <= z_upper[i]]
+        
+        index_list=[]
+        #print("len of b is -----",len(b))
+        for x in range(len(b)):
+            index_list.append(x)         
+        choices_index=choices(index_list,k=n_samples//10)
+        d=[]
+        #print(len(choices_index))
+        for x in range(len(choices_index)):
+            #print(x)            
+            d.append(b[choices_index[x]])
+
+        z_outofsample_1[0, (n * n_samples // 10):(n * n_samples // 10 + n_samples //10)] =np.array(d)
+
+    for n in range(10):
+        
+        b=np.random.multivariate_normal(norm_dist[n][0]*out_of_sample_mean_scale_2, norm_dist[n][1]*sigma_outofsample_2,n_samples//1)
+        b=b.tolist()
+        for i in range(len(z_mean)):
+            b = np.array(b)
+            b = [t for t in b if t[i] >= z_lower[i] and t[i] <= z_upper[i]]
+        
+        index_list=[]
+        #print("len of b is -----",len(b))
+        for x in range(len(b)):
+            index_list.append(x)         
+        choices_index=choices(index_list,k=n_samples//10)
+        d=[]
+        #print(len(choices_index))
+        for x in range(len(choices_index)):
+            #print(x)            
+            d.append(b[choices_index[x]])
+
+        z_outofsample_2[0, (n * n_samples // 10):(n * n_samples // 10 + n_samples //10)] =np.array(d)
+
+    for n in range(10):
+        
+        b=np.random.multivariate_normal(norm_dist[n][0]*out_of_sample_mean_scale_3, norm_dist[n][1]*sigma_outofsample_3,n_samples//1)
+        b=b.tolist()
+        for i in range(len(z_mean)):
+            b = np.array(b)
+            b = [t for t in b if t[i] >= z_lower[i] and t[i] <= z_upper[i]]
+        
+        index_list=[]
+        #print("len of b is -----",len(b))
+        for x in range(len(b)):
+            index_list.append(x)         
+        choices_index=choices(index_list,k=n_samples//10)
+        d=[]
+        #print(len(choices_index))
+        for x in range(len(choices_index)):
+            #print(x)            
+            d.append(b[choices_index[x]])
+
+        z_outofsample_3[0, (n * n_samples // 10):(n * n_samples // 10 + n_samples //10)] =np.array(d)
+        
+    for n in range(10):
+        
+        b=np.random.multivariate_normal(norm_dist[n][0]*out_of_sample_mean_scale_4, norm_dist[n][1]*sigma_outofsample_4,n_samples//1)
+        b=b.tolist()
+        for i in range(len(z_mean)):
+            b = np.array(b)
+            b = [t for t in b if t[i] >= z_lower[i] and t[i] <= z_upper[i]]
+        
+        index_list=[]
+        #print("len of b is -----",len(b))
+        for x in range(len(b)):
+            index_list.append(x)         
+        choices_index=choices(index_list,k=n_samples//10)
+        d=[]
+        #print(len(choices_index))
+        for x in range(len(choices_index)):
+            #print(x)            
+            d.append(b[choices_index[x]])
+
+        z_outofsample_4[0, (n * n_samples // 10):(n * n_samples // 10 + n_samples //10)] =np.array(d)
+
+    return (z_label[0],z_outofsample_1[0],z_outofsample_2[0],z_outofsample_3[0],z_outofsample_4[0])
