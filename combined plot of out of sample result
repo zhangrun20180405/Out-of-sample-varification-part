@@ -1,0 +1,448 @@
+
+import matplotlib.pyplot as plt
+    #plt.style.use('seaborn-whitegrid')
+import numpy as np
+import matplotlib.ticker as ticker
+from pylab import *
+fig = plt.figure("C-DRO-WSI-WOUTSI",dpi=280)
+fig.set_figheight(30)
+fig.set_figwidth(40)
+
+
+alpha_a=0.78
+alpha_b=0.78
+bin1= np.linspace(26,36,80)
+bin2= np.linspace(26,36,80)
+bin3= np.linspace(26,36,80)
+bin4= np.linspace(26,36,80)
+bin5= np.linspace(26,36,80)
+bin6= np.linspace(26,36,80)
+bin7= np.linspace(26,36,80)
+bin8= np.linspace(26,36,80)
+
+
+
+x_l_1,x_r_1=26,36
+x_l_2,x_r_2=26,36
+x_l_3,x_r_3=26,36
+x_l_4,x_r_4=26,36
+x_l_5,x_r_5=26,36
+x_l_6,x_r_6=26,36
+x_l_7,x_r_7=26,36
+x_l_8,x_r_8=26,36
+x_l_9,x_r_9=26,36
+x_l_10,x_r_10=26,36
+x_l_11,x_r_11=26,36
+x_l_12,x_r_12=26,36
+
+yl=0.08
+    # 网格参数
+     #
+ax = plt.subplot(341)
+x=np.full(100,D_L_list[0])
+y=np.linspace(0,120,100)
+plt.plot(x, y,color="black", linewidth=5)
+#ax.set_xlabel('Out-of-sample systme lifetime ')
+ax.set_ylabel('Probability  ',fontsize=25)
+    # define range of x axis
+ax.set_ylim(0, yl)
+    # define range of y axis
+ax.set_xlim(x_l_1,x_r_1)
+    #plt.xticks(range(len(al_all)))
+    #plt.gca().xaxis.set_major_formatter(ticker.FormatStrFormatter('%1i'))
+weights_5_1=np.ones_like(out_of_sample_life_5_sigma_1[0])/float(len(out_of_sample_life_5_sigma_1[0]))
+weights_pr_1=np.ones_like(out_of_sample_life_5_sigma_1[1])/float(len(out_of_sample_life_5_sigma_1[1]))
+
+    
+plt.hist(out_of_sample_life_5_sigma_1[0], bin1,facecolor="white", edgecolor="black",alpha=alpha_a, label = "With S.I",weights=weights_5_1,stacked=False)
+plt.hist(out_of_sample_life_5_sigma_1[1],bin1, facecolor="silver",edgecolor="black",alpha=alpha_b, label = "Without S.I",weights=weights_pr_1,stacked=False)
+    #ax.plot(dl_all,model_output,color='DarkSlateGray',lw=0.5,markeredgecolor='DarkSlateGray',marker='o',markerfacecolor='white',markersize=3.5)
+ax.legend(loc='upper right',fontsize=23)
+plt.grid(linestyle='--',linewidth=0.45)
+ax_up = ax.twiny()  # this is the important function
+#ax_up.set_xlabel("Δ\u2098: %s, Δ\u209B: %s" % ("5%", "800%"))
+ax.set_xlabel("Out-of-sample system lifetime\n($Δ_\u004d,Δ_\u0053$ )=(%s,%s)\n(a)" % ("5%", "10%"),fontsize=25)
+plt.xticks(fontsize=25)
+plt.yticks(fontsize=25)
+
+ax2 = plt.subplot(342)
+
+    # 网格参数
+     #
+x=np.full(100,D_L_list[0])
+y=np.linspace(0,120,100)
+plt.plot(x, y,color="black", linewidth=5)
+#ax2.set_xlabel('Out-of-sample systme lifetime ')
+ax2.set_ylabel('Probability  ',fontsize=25)
+    # define range of x axis
+ax2.set_ylim(0, yl)
+    # define range of y axis
+ax2.set_xlim(x_l_2,x_r_2)
+    #plt.xticks(range(len(al_all)))
+    #plt.gca().xaxis.set_major_formatter(ticker.FormatStrFormatter('%1i'))
+weights_5_2=np.ones_like(out_of_sample_life_5_sigma_2[0])/float(len(out_of_sample_life_5_sigma_2[0]))
+weights_pr_2=np.ones_like(out_of_sample_life_5_sigma_2[1])/float(len(out_of_sample_life_5_sigma_2[1]))
+
+plt.hist(out_of_sample_life_5_sigma_2[0], bin2,facecolor="white", edgecolor="black",alpha=alpha_a, label = "With S.I",weights=weights_5_2,stacked=False)
+plt.hist(out_of_sample_life_5_sigma_2[1],bin2, facecolor="silver",edgecolor="black",alpha=alpha_b, label = "Without S.I",weights=weights_pr_2,stacked=False)
+    #ax.plot(dl_all,model_output,color='DarkSlateGray',lw=0.5,markeredgecolor='DarkSlateGray',marker='o',markerfacecolor='white',markersize=3.5)
+plt.xticks(fontsize=25)
+plt.yticks(fontsize=25)
+ax2.legend(loc='upper right',fontsize=23)
+plt.grid(linestyle='--',linewidth=0.45)
+ax2_up = ax2.twiny()  # this is the important function
+#ax2_up.set_xlabel("Δ\u2098: %s, Δ\u209B: %s" % ("5%", "1000%"))
+ax2.set_xlabel("Out-of-sample system lifetime\n($Δ_\u004d,Δ_\u0053$ )=(%s,%s) \n(b)" % ("5%", "15%"),fontsize=25)
+
+ax3 = plt.subplot(343)
+
+    # 网格参数
+     #
+x=np.full(100,D_L_list[0])
+y=np.linspace(0,120,100)
+plt.plot(x, y,color="black", linewidth=5)
+#ax3.set_xlabel('Out-of-sample systme lifetime ')
+ax3.set_ylabel('Probability ',fontsize=25)
+    # define range of x axis
+ax3.set_ylim(0,yl)
+    # define range of y axis
+ax3.set_xlim(x_l_3,x_r_3)
+    #plt.xticks(range(len(al_all)))
+    #plt.gca().xaxis.set_major_formatter(ticker.FormatStrFormatter('%1i'))
+weights_5_3=np.ones_like(out_of_sample_life_5_sigma_3[0])/float(len(out_of_sample_life_5_sigma_3[0]))
+weights_pr_3=np.ones_like(out_of_sample_life_5_sigma_3[1])/float(len(out_of_sample_life_5_sigma_3[1]))
+
+plt.hist(out_of_sample_life_5_sigma_3[0], bin3,facecolor="white", edgecolor="black",alpha=alpha_a, label = "With S.I",weights=weights_5_3,stacked=False)
+plt.hist(out_of_sample_life_5_sigma_3[1],bin3, facecolor="silver",edgecolor="black",alpha=alpha_b, label = "Without S.l",weights=weights_pr_3,stacked=False)
+plt.xticks(fontsize=25)
+plt.yticks(fontsize=25)
+    #ax.plot(dl_all,model_output,color='DarkSlateGray',lw=0.5,markeredgecolor='DarkSlateGray',marker='o',markerfacecolor='white',markersize=3.5)
+ax3.legend(loc='upper right',fontsize=23)
+plt.grid(linestyle='--',linewidth=0.45)
+ax3_up = ax3.twiny()  # this is the important function
+#ax3_up.set_xlabel("Δ\u2098: %s, Δ\u209B: %s" % ("5%", "1200%"))
+ax3.set_xlabel("Out-of-sample system lifetime\n($Δ_\u004d,Δ_\u0053$)=(%s,%s)\n(c)" % ("5%", "20%"),fontsize=25)
+
+ax4 = plt.subplot(344)
+
+    # 网格参数
+     #
+x=np.full(100,D_L_list[0])
+y=np.linspace(0,120,100)
+plt.plot(x, y,color="black", linewidth=5)
+#ax3.set_xlabel('Out-of-sample systme lifetime ')
+ax4.set_ylabel('Probability ',fontsize=25)
+    # define range of x axis
+ax4.set_ylim(0,yl)
+    # define range of y axis
+ax4.set_xlim(x_l_4,x_r_4)
+    #plt.xticks(range(len(al_all)))
+    #plt.gca().xaxis.set_major_formatter(ticker.FormatStrFormatter('%1i'))
+weights_5_4=np.ones_like(out_of_sample_life_5_sigma_4[0])/float(len(out_of_sample_life_5_sigma_4[0]))
+weights_pr_4=np.ones_like(out_of_sample_life_5_sigma_4[1])/float(len(out_of_sample_life_5_sigma_4[1]))
+
+plt.hist(out_of_sample_life_5_sigma_4[0], bin4,facecolor="white", edgecolor="black",alpha=alpha_a, label = "With S.I",weights=weights_5_4,stacked=False)
+plt.hist(out_of_sample_life_5_sigma_4[1],bin4, facecolor="silver",edgecolor="black",alpha=alpha_b, label = "Without S.l",weights=weights_pr_4,stacked=False)
+plt.xticks(fontsize=25)
+plt.yticks(fontsize=25)
+    #ax.plot(dl_all,model_output,color='DarkSlateGray',lw=0.5,markeredgecolor='DarkSlateGray',marker='o',markerfacecolor='white',markersize=3.5)
+ax4.legend(loc='upper right',fontsize=23)
+plt.grid(linestyle='--',linewidth=0.45)
+ax4_up = ax4.twiny()  # this is the important function
+#ax3_up.set_xlabel("Δ\u2098: %s, Δ\u209B: %s" % ("5%", "1200%"))
+ax4.set_xlabel("Out-of-sample system lifetime\n($Δ_\u004d,Δ_\u0053$)=(%s,%s)\n(d)" % ("5%", "30%"),fontsize=25)
+
+
+ax5 = plt.subplot(345)
+x=np.full(100,D_L_list[0])
+y=np.linspace(0,120,100)
+plt.plot(x, y,color="black", linewidth=5)
+#ax.set_xlabel('Out-of-sample systme lifetime ')
+ax5.set_ylabel('Probability ',fontsize=25)
+    # define range of x axis
+ax5.set_ylim(0, yl)
+    # define range of y axis
+ax5.set_xlim(x_l_5,x_r_5)
+    #plt.xticks(range(len(al_all)))
+    #plt.gca().xaxis.set_major_formatter(ticker.FormatStrFormatter('%1i'))
+weights_5_5=np.ones_like(out_of_sample_life_5_sigma_5[0])/float(len(out_of_sample_life_5_sigma_5[0]))
+weights_pr_5=np.ones_like(out_of_sample_life_5_sigma_5[1])/float(len(out_of_sample_life_5_sigma_5[1]))
+
+    
+plt.hist(out_of_sample_life_5_sigma_5[0], bin1,facecolor="white", edgecolor="black",alpha=alpha_a, label = "With S.I",weights=weights_5_5,stacked=False)
+plt.hist(out_of_sample_life_5_sigma_5[1],bin1, facecolor="silver",edgecolor="black",alpha=alpha_b, label = "Without S.I",weights=weights_pr_5,stacked=False)
+    #ax.plot(dl_all,model_output,color='DarkSlateGray',lw=0.5,markeredgecolor='DarkSlateGray',marker='o',markerfacecolor='white',markersize=3.5)
+ax5.legend(loc='upper right',fontsize=23)
+plt.grid(linestyle='--',linewidth=0.45)
+ax5_up = ax5.twiny()  # this is the important function
+#ax_up.set_xlabel("Δ\u2098: %s, Δ\u209B: %s" % ("5%", "800%"))
+ax5.set_xlabel("Out-of-sample system lifetime\n($Δ_\u004d,Δ_\u0053$ )=(%s,%s) \n(e)" % ("8%", "10%"),fontsize=25)
+plt.xticks(fontsize=25)
+plt.yticks(fontsize=25)
+
+ax6 = plt.subplot(346)
+
+    # 网格参数
+     #
+x=np.full(100,D_L_list[0])
+y=np.linspace(0,120,100)
+plt.plot(x, y,color="black", linewidth=5)
+#ax2.set_xlabel('Out-of-sample systme lifetime ')
+ax6.set_ylabel('Probability ',fontsize=25)
+    # define range of x axis
+ax6.set_ylim(0, yl)
+    # define range of y axis
+ax6.set_xlim(x_l_6,x_r_6)
+    #plt.xticks(range(len(al_all)))
+    #plt.gca().xaxis.set_major_formatter(ticker.FormatStrFormatter('%1i'))
+weights_5_6=np.ones_like(out_of_sample_life_5_sigma_6[0])/float(len(out_of_sample_life_5_sigma_6[0]))
+weights_pr_6=np.ones_like(out_of_sample_life_5_sigma_6[1])/float(len(out_of_sample_life_5_sigma_6[1]))
+
+plt.hist(out_of_sample_life_5_sigma_6[0], bin2,facecolor="white", edgecolor="black",alpha=alpha_a, label = "With S.I",weights=weights_5_6,stacked=False)
+plt.hist(out_of_sample_life_5_sigma_6[1],bin2, facecolor="silver",edgecolor="black",alpha=alpha_b, label = "Without S.I",weights=weights_pr_6,stacked=False)
+    #ax.plot(dl_all,model_output,color='DarkSlateGray',lw=0.5,markeredgecolor='DarkSlateGray',marker='o',markerfacecolor='white',markersize=3.5)
+plt.xticks(fontsize=25)
+plt.yticks(fontsize=25)
+ax6.legend(loc='upper right',fontsize=23)
+plt.grid(linestyle='--',linewidth=0.45)
+ax6_up = ax6.twiny()  # this is the important function
+#ax2_up.set_xlabel("Δ\u2098: %s, Δ\u209B: %s" % ("5%", "1000%"))
+ax6.set_xlabel("Out-of-sample system lifetime\n($Δ_\u004d,Δ_\u0053$)=(%s,%s) \n(f)" % ("8%", "15%"),fontsize=25)
+
+ax7 = plt.subplot(347)
+
+    # 网格参数
+     #
+x=np.full(100,D_L_list[0])
+y=np.linspace(0,120,100)
+plt.plot(x, y,color="black", linewidth=5)
+#ax3.set_xlabel('Out-of-sample systme lifetime ')
+ax7.set_ylabel('Probability  ',fontsize=25)
+    # define range of x axis
+ax7.set_ylim(0,yl)
+    # define range of y axis
+ax7.set_xlim(x_l_7,x_r_7)
+    #plt.xticks(range(len(al_all)))
+    #plt.gca().xaxis.set_major_formatter(ticker.FormatStrFormatter('%1i'))
+weights_5_7=np.ones_like(out_of_sample_life_5_sigma_7[0])/float(len(out_of_sample_life_5_sigma_7[0]))
+weights_pr_7=np.ones_like(out_of_sample_life_5_sigma_7[1])/float(len(out_of_sample_life_5_sigma_7[1]))
+
+plt.hist(out_of_sample_life_5_sigma_7[0], bin3,facecolor="white", edgecolor="black",alpha=alpha_a, label = "With S.I",weights=weights_5_7,stacked=False)
+plt.hist(out_of_sample_life_5_sigma_7[1],bin3, facecolor="silver",edgecolor="black",alpha=alpha_b, label = "Without S.l",weights=weights_pr_7,stacked=False)
+plt.xticks(fontsize=25)
+plt.yticks(fontsize=25)
+    #ax.plot(dl_all,model_output,color='DarkSlateGray',lw=0.5,markeredgecolor='DarkSlateGray',marker='o',markerfacecolor='white',markersize=3.5)
+ax7.legend(loc='upper right',fontsize=23)
+plt.grid(linestyle='--',linewidth=0.45)
+ax7_up = ax7.twiny()  # this is the important function
+#ax3_up.set_xlabel("Δ\u2098: %s, Δ\u209B: %s" % ("5%", "1200%"))
+ax7.set_xlabel("Out-of-sample system lifetime\n($Δ_\u004d,Δ_\u0053$ )=(%s,%s) \n(g)" % ("8%", "20%"),fontsize=25)
+
+ax8 = plt.subplot(348)
+
+    # 网格参数
+     #
+x=np.full(100,D_L_list[0])
+y=np.linspace(0,120,100)
+plt.plot(x, y,color="black", linewidth=5)
+#ax3.set_xlabel('Out-of-sample systme lifetime ')
+ax8.set_ylabel('Probability  ',fontsize=25)
+    # define range of x axis
+ax8.set_ylim(0,yl)
+    # define range of y axis
+ax8.set_xlim(x_l_8,x_r_8)
+    #plt.xticks(range(len(al_all)))
+    #plt.gca().xaxis.set_major_formatter(ticker.FormatStrFormatter('%1i'))
+weights_5_8=np.ones_like(out_of_sample_life_5_sigma_8[0])/float(len(out_of_sample_life_5_sigma_8[0]))
+weights_pr_8=np.ones_like(out_of_sample_life_5_sigma_8[1])/float(len(out_of_sample_life_5_sigma_8[1]))
+
+plt.hist(out_of_sample_life_5_sigma_8[0], bin4,facecolor="white", edgecolor="black",alpha=alpha_a, label = "With S.I",weights=weights_5_8,stacked=False)
+plt.hist(out_of_sample_life_5_sigma_8[1],bin4, facecolor="silver",edgecolor="black",alpha=alpha_b, label = "Without S.l",weights=weights_pr_8,stacked=False)
+plt.xticks(fontsize=25)
+plt.yticks(fontsize=25)
+    #ax.plot(dl_all,model_output,color='DarkSlateGray',lw=0.5,markeredgecolor='DarkSlateGray',marker='o',markerfacecolor='white',markersize=3.5)
+ax8.legend(loc='upper right',fontsize=23)
+plt.grid(linestyle='--',linewidth=0.45)
+ax8_up = ax8.twiny()  # this is the important function
+#ax3_up.set_xlabel("Δ\u2098: %s, Δ\u209B: %s" % ("5%", "1200%"))
+ax8.set_xlabel("Out-of-sample system lifetime\n($Δ_\u004d,Δ_\u0053$ )=(%s,%s)\n(h)" % ("8%", "30%"),fontsize=25)
+
+
+
+
+
+x_l_9,x_r_9=26,36
+x_l_10,x_r_10=26,36
+x_l_11,x_r_11=26,36
+x_l_12,x_r_12=26,36
+
+
+    # 网格参数
+     #
+ax9 = plt.subplot(349)
+x=np.full(100,D_L_list[0])
+y=np.linspace(0,120,100)
+plt.plot(x, y,color="black", linewidth=5)
+#ax.set_xlabel('Out-of-sample systme lifetime ')
+ax9.set_ylabel('Probability  ',fontsize=25)
+    # define range of x axis
+ax9.set_ylim(0, yl)
+    # define range of y axis
+ax9.set_xlim(x_l_9,x_r_9)
+    #plt.xticks(range(len(al_all)))
+    #plt.gca().xaxis.set_major_formatter(ticker.FormatStrFormatter('%1i'))
+weights_5_9=np.ones_like(out_of_sample_life_5_sigma_9[0])/float(len(out_of_sample_life_5_sigma_9[0]))
+weights_pr_9=np.ones_like(out_of_sample_life_5_sigma_9[1])/float(len(out_of_sample_life_5_sigma_9[1]))
+
+    
+plt.hist(out_of_sample_life_5_sigma_9[0], bin1,facecolor="white", edgecolor="black",alpha=alpha_a, label = "With S.I",weights=weights_5_9,stacked=False)
+plt.hist(out_of_sample_life_5_sigma_9[1],bin1, facecolor="silver",edgecolor="black",alpha=alpha_b, label = "Without S.I",weights=weights_pr_9,stacked=False)
+    #ax.plot(dl_all,model_output,color='DarkSlateGray',lw=0.5,markeredgecolor='DarkSlateGray',marker='o',markerfacecolor='white',markersize=3.5)
+ax9.legend(loc='upper right',fontsize=23)
+plt.grid(linestyle='--',linewidth=0.45)
+ax9_up = ax9.twiny()  # this is the important function
+#ax_up.set_xlabel("Δ\u2098: %s, Δ\u209B: %s" % ("5%", "800%"))
+ax9.set_xlabel("Out-of-sample system lifetime\n($Δ_\u004d,Δ_\u0053$ )=(%s,%s)\n(i)" % ("10%", "10%"),fontsize=25)
+plt.xticks(fontsize=25)
+plt.yticks(fontsize=25)
+
+ax10 = plt.subplot(3,4,10)
+
+    # 网格参数
+     #
+x=np.full(100,D_L_list[0])
+y=np.linspace(0,120,100)
+plt.plot(x, y,color="black", linewidth=5)
+#ax2.set_xlabel('Out-of-sample systme lifetime ')
+ax10.set_ylabel('Probability ',fontsize=25)
+    # define range of x axis
+ax10.set_ylim(0, yl)
+    # define range of y axis
+ax10.set_xlim(x_l_10,x_r_10)
+    #plt.xticks(range(len(al_all)))
+    #plt.gca().xaxis.set_major_formatter(ticker.FormatStrFormatter('%1i'))
+weights_5_10=np.ones_like(out_of_sample_life_5_sigma_10[0])/float(len(out_of_sample_life_5_sigma_10[0]))
+weights_pr_10=np.ones_like(out_of_sample_life_5_sigma_10[1])/float(len(out_of_sample_life_5_sigma_10[1]))
+
+plt.hist(out_of_sample_life_5_sigma_10[0], bin2,facecolor="white", edgecolor="black",alpha=alpha_a, label = "With S.I",weights=weights_5_10,stacked=False)
+plt.hist(out_of_sample_life_5_sigma_10[1],bin2, facecolor="silver",edgecolor="black",alpha=alpha_b, label = "Without S.I",weights=weights_pr_10,stacked=False)
+    #ax.plot(dl_all,model_output,color='DarkSlateGray',lw=0.5,markeredgecolor='DarkSlateGray',marker='o',markerfacecolor='white',markersize=3.5)
+plt.xticks(fontsize=25)
+plt.yticks(fontsize=25)
+ax10.legend(loc='upper right',fontsize=23)
+plt.grid(linestyle='--',linewidth=0.45)
+ax10_up = ax10.twiny()  # this is the important function
+#ax2_up.set_xlabel("Δ\u2098: %s, Δ\u209B: %s" % ("5%", "1000%"))
+ax10.set_xlabel("Out-of-sample system lifetime\n($Δ_\u004d,Δ_\u0053$ )=(%s,%s)\n(j)" % ("10%", "15%"),fontsize=25)
+
+ax11= plt.subplot(3,4,11)
+
+    # 网格参数
+     #
+x=np.full(100,D_L_list[0])
+y=np.linspace(0,120,100)
+plt.plot(x, y,color="black", linewidth=5)
+#ax3.set_xlabel('Out-of-sample systme lifetime ')
+ax11.set_ylabel('Probability  ',fontsize=25)
+    # define range of x axis
+ax11.set_ylim(0,yl)
+    # define range of y axis
+ax11.set_xlim(x_l_11,x_r_11)
+    #plt.xticks(range(len(al_all)))
+    #plt.gca().xaxis.set_major_formatter(ticker.FormatStrFormatter('%1i'))
+weights_5_11=np.ones_like(out_of_sample_life_5_sigma_11[0])/float(len(out_of_sample_life_5_sigma_11[0]))
+weights_pr_11=np.ones_like(out_of_sample_life_5_sigma_11[1])/float(len(out_of_sample_life_5_sigma_11[1]))
+
+plt.hist(out_of_sample_life_5_sigma_11[0], bin3,facecolor="white", edgecolor="black",alpha=alpha_a, label = "With S.I",weights=weights_5_11,stacked=False)
+plt.hist(out_of_sample_life_5_sigma_11[1],bin3, facecolor="silver",edgecolor="black",alpha=alpha_b, label = "Without S.l",weights=weights_pr_11,stacked=False)
+plt.xticks(fontsize=25)
+plt.yticks(fontsize=25)
+    #ax.plot(dl_all,model_output,color='DarkSlateGray',lw=0.5,markeredgecolor='DarkSlateGray',marker='o',markerfacecolor='white',markersize=3.5)
+ax11.legend(loc='upper right',fontsize=23)
+plt.grid(linestyle='--',linewidth=0.45)
+ax11_up = ax11.twiny()  # this is the important function
+#ax3_up.set_xlabel("Δ\u2098: %s, Δ\u209B: %s" % ("5%", "1200%"))
+ax11.set_xlabel("Out-of-sample system lifetime\n($Δ_\u004d,Δ_\u0053$ )=(%s,%s)\n(k)" % ("10%", "20%"),fontsize=25)
+
+ax12 = plt.subplot(3,4,12)
+
+    # 网格参数
+     #
+x=np.full(100,D_L_list[0])
+y=np.linspace(0,120,100)
+plt.plot(x, y,color="black", linewidth=5)
+#ax3.set_xlabel('Out-of-sample systme lifetime ')
+ax12.set_ylabel('Probability  ',fontsize=25)
+    # define range of x axis
+ax12.set_ylim(0,yl)
+    # define range of y axis
+ax12.set_xlim(x_l_12,x_r_12)
+    #plt.xticks(range(len(al_all)))
+    #plt.gca().xaxis.set_major_formatter(ticker.FormatStrFormatter('%1i'))
+weights_5_12=np.ones_like(out_of_sample_life_5_sigma_12[0])/float(len(out_of_sample_life_5_sigma_12[0]))
+weights_pr_12=np.ones_like(out_of_sample_life_5_sigma_12[1])/float(len(out_of_sample_life_5_sigma_12[1]))
+
+plt.hist(out_of_sample_life_5_sigma_12[0], bin4,facecolor="white", edgecolor="black",alpha=alpha_a, label = "With S.I",weights=weights_5_12,stacked=False)
+plt.hist(out_of_sample_life_5_sigma_12[1],bin4, facecolor="silver",edgecolor="black",alpha=alpha_b, label = "Without S.l",weights=weights_pr_12,stacked=False)
+plt.xticks(fontsize=25)
+plt.yticks(fontsize=25)
+    #ax.plot(dl_all,model_output,color='DarkSlateGray',lw=0.5,markeredgecolor='DarkSlateGray',marker='o',markerfacecolor='white',markersize=3.5)
+ax12.legend(loc='upper right',fontsize=23)
+plt.grid(linestyle='--',linewidth=0.45)
+ax12_up = ax12.twiny()  # this is the important function
+#ax3_up.set_xlabel("Δ\u2098: %s, Δ\u209B: %s" % ("5%", "1200%"))
+ax12.set_xlabel("Out-of-sample system lifetime\n($Δ_\u004d,Δ_\u0053$ )=(%s,%s) \n(l)" % ("10%", "30%"),fontsize=25)
+
+    # 网格参数
+     #
+
+
+
+'''
+tick
+'''
+
+ax.tick_params(axis='x',width=2,labelsize=25)
+ax.tick_params(axis='y',width=2,labelsize=25)
+ax2.tick_params(axis='x',width=2,labelsize=25)
+ax2.tick_params(axis='y',width=2,labelsize=25)
+ax3.tick_params(axis='x',width=2,labelsize=25)
+ax3.tick_params(axis='y',width=2,labelsize=25)
+ax4.tick_params(axis='x',width=2,labelsize=25)
+ax4.tick_params(axis='y',width=2,labelsize=25)
+ax5.tick_params(axis='x',width=2,labelsize=25)
+ax5.tick_params(axis='y',width=2,labelsize=25)
+ax6.tick_params(axis='x',width=2,labelsize=25)
+ax6.tick_params(axis='y',width=2,labelsize=25)
+ax7.tick_params(axis='x',width=2,labelsize=25)
+ax7.tick_params(axis='y',width=2,labelsize=25)
+ax8.tick_params(axis='x',width=2,labelsize=25)
+ax8.tick_params(axis='y',width=2,labelsize=25)
+ax9.tick_params(axis='x',width=2,labelsize=25)
+ax9.tick_params(axis='y',width=2,labelsize=25)
+ax10.tick_params(axis='x',width=2,labelsize=25)
+ax10.tick_params(axis='y',width=2,labelsize=25)
+ax11.tick_params(axis='x',width=2,labelsize=25)
+ax11.tick_params(axis='y',width=2,labelsize=25)
+ax12.tick_params(axis='x',width=2,labelsize=25)
+ax12.tick_params(axis='y',width=2,labelsize=25)
+#ax4.tick_params(axis='x',width=0,labelsize=0)
+#ax4.tick_params(axis='y',width=2,labelsize='medium')
+#ax5.tick_params(axis='x',width=0,labelsize=0)
+#ax5.tick_params(axis='y',width=0,labelsize=0)
+#ax6.tick_params(axis='x',width=0,labelsize=0)
+#ax6.tick_params(axis='y',width=0,labelsize=0)
+
+ax_up.tick_params(axis='x',width=0,labelsize=0)
+ax2_up.tick_params(axis='x',width=0,labelsize=0)
+ax3_up.tick_params(axis='x',width=0,labelsize=0)
+ax4_up.tick_params(axis='x',width=0,labelsize=0)
+ax5_up.tick_params(axis='x',width=0,labelsize=0)
+ax6_up.tick_params(axis='x',width=0,labelsize=0)
+ax7_up.tick_params(axis='x',width=0,labelsize=0)
+ax8_up.tick_params(axis='x',width=0,labelsize=0)
+ax9_up.tick_params(axis='x',width=0,labelsize=0)
+ax10_up.tick_params(axis='x',width=0,labelsize=0)
+ax11_up.tick_params(axis='x',width=0,labelsize=0)
+ax12_up.tick_params(axis='x',width=0,labelsize=0)
+plt.subplots_adjust(wspace=0.4, hspace=0.4)
