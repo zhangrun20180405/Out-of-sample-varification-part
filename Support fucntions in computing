@@ -1,0 +1,415 @@
+def clustered_original_data_with_label(data_m,fixed_clusters,n_principle_components=3):
+    from sklearn.cluster import KMeans
+    '''
+    input variable default k=5 clusters
+    input data normally D/{D_m}
+    '''
+    data_orignial=data_m
+    data = StandardScaler().fit_transform(data_m)  
+    '''
+    data := Stanardized data  
+    '''
+    
+    pca=PCA(n_components=n_principle_components)
+    
+    '''
+    Demansion reduction process
+    '''
+    
+    data_pca=pca.fit_transform(data)
+    
+    '''
+    data_pca := standarized data after pca 
+    '''
+    
+    k_means_array=[]
+    
+    kmeans = KMeans(n_clusters=fixed_clusters, random_state=0).fit(data)
+    
+    k_means_array.append(kmeans)
+    
+    labels = kmeans.labels_
+    '''
+    Apply kmeans algorithm
+    Got labels
+    '''
+
+    labels=labels.reshape(1,len(labels))
+    
+    '''
+    reshape labels for data requiements in concatenate combination
+    '''
+    data_AfterPcaWithLabel=np.concatenate((labels.T,data_pca),axis=1)
+    data_OriginaWithLabel=np.concatenate((labels.T,data_orignial),axis=1)
+    '''
+    combine labels  after PCA operation with pca_data, then we get a novel dataset,which contains label(number of clusters) and data after pca operation
+    '''
+  
+    return data_OriginaWithLabel
+    
+def list_data_to_tuple(data,N,M_i):    
+    '''
+    Can be used in:
+    z_upper/lower bound to 
+    '''
+    
+    internal_tuple_0=()
+    index=0
+    for i in range(N):
+        internal_tuple_2=()
+        for j in range(M_i[i]):
+            internal_tuple_1=tuple(x for  x in [data[index]])
+            internal_tuple_2=internal_tuple_2+(internal_tuple_1)
+            index=index+1
+        internal_tuple_0=internal_tuple_0+(internal_tuple_2,)
+        
+    return internal_tuple_0
+
+
+def list_data_to_tuple_with_k(data,N,M_i,K):
+    '''
+    Can be used in
+    z_mean to nu or v_ijk
+    '''
+    internal_tuple_0=()
+    index=0
+    for i in range(N):
+        internal_tuple_1=()
+        for j in range(M_i[i]):
+            internal_tuple_2=()
+            internal_tuple_3=()
+            for k in range(K):
+                internal_tuple_3=tuple(x for  x in [round(z_mean[index],2)])
+                internal_tuple_2=internal_tuple_2+internal_tuple_3
+            index=index+1
+            internal_tuple_1=internal_tuple_1+(internal_tuple_2,)
+        internal_tuple_0=internal_tuple_0+(internal_tuple_1,)
+        
+    return internal_tuple_0 
+
+def list_data_to_tuple_with_k_ijt(data,K,N,M_i,T_ij):
+    '''
+    from z_mean to mu
+    '''
+    internal_tuple_k=()
+    for k in range(K):
+        internal_tuple_0=()
+        index=0
+        for i in range(N):
+            internal_tuple_1=()
+            for j in range(M_i[i]):
+                internal_tuple_2=()
+                internal_tuple_3=()
+                for t in range(T_ij[i][j]):
+                    internal_tuple_3=tuple(x for  x in [z_mean[index]])
+                    internal_tuple_2=internal_tuple_2+internal_tuple_3
+                index=index+1
+                internal_tuple_1=internal_tuple_1+(internal_tuple_2,)
+            internal_tuple_0=internal_tuple_0+(internal_tuple_1,)
+        internal_tuple_k=internal_tuple_k+(internal_tuple_0,)
+    return internal_tuple_k
+
+
+def fun_data_M_i_cluster_to_tuple_sigma(data,fixed_clusters,M_i):
+    
+    import pandas as pd
+    df=pd.DataFrame(data)
+    df[0]=df[0].astype('int')
+    '''
+    input  
+    param  M_i: numbe of component in system 
+    fixed_cluster 
+    data with label index 0~ (finxed_clusters-1) and 26 dimension of data
+    
+    Output:
+    
+    Sigma, tuple, float
+    '''
+    column_number=0
+
+
+    internal_tuple_i=()
+    for i in range(len(M_i)):
+        internal_tuple_j=()
+        for j in range(M_i[i]):        
+            column_number+=1  # counting the number in column for indexing
+            internal_list_k_cluster=[]
+            internal_tuple_k_cluster=()
+            for k in range(fixed_clusters):
+                internal_list_k_cluster.append(round(pow(df[df[0]==k].loc[:,1].var(),0.5),2))   
+            internal_tuple_k_cluster=tuple(x for x in internal_list_k_cluster)        
+            internal_tuple_j=internal_tuple_j+(internal_tuple_k_cluster,)
+        internal_tuple_i=internal_tuple_i+(internal_tuple_j,)
+        #return sigma of data    
+    return internal_tuple_i 
+
+
+
+def tuple_data_with_deta_for_all(data,deta=1):
+    '''
+    for shift values in tuples
+    '''
+    deta=deta
+    internal_3=()
+    for i in range(len(data)):
+        internal_2=()
+        for j in range(len(data[i])):
+            internal_1=()
+            for z in range(len(data[i][j])):
+                internal_0=[data[i][j][z]+deta]
+                #print(internal_0)
+                internal_0_tuple=tuple( x for x in internal_0)
+                #print(internal_1)
+                internal_1=internal_1+(internal_0_tuple)
+            internal_2+=(internal_1,)
+        #print(internal_2)
+        internal_3= internal_3 +(internal_2,)
+        
+    return internal_3
+
+
+
+
+def p_k(data,K):
+    df=pd.DataFrame(data)
+    df[0]=df[0].astype('int')
+    '''
+    data are original data with label in the first column
+    '''
+    p=[]
+    for i in range(K):
+        p.append(df.groupby(0).count().iloc[i,1]/len(df))
+    return p
+
+def dic_x_to_tuple_x(dict_x,N,M_i,T_ij):
+    '''
+    input:
+    Dictionary x
+    output:
+    tuple x with format of i,j and t
+    
+    '''
+    x_value= [x0 for x0 in dict_x.values()]
+    
+    internal_index=0
+    internal_tuple_0=()
+    for i  in range(N):
+        internal_tuple_1=()
+        for j in range(M_i[i]):
+            internal_tuple_2=()
+            for t in range(T_ij[i][j]):
+                internal_tuple_2=internal_tuple_2+tuple( g for g in [int(x_value[internal_index])])
+                internal_index=internal_index+1
+                #print(internal_tuple_2)
+            internal_tuple_1=internal_tuple_1+(internal_tuple_2,)
+
+        internal_tuple_0=internal_tuple_0+(internal_tuple_1,)
+    return internal_tuple_0
+
+
+
+def fun_data_M_i_cluster_to_tuple_mu(data,K,N,M_i,T_ij):
+    import pandas as pd
+    df=pd.DataFrame(data)
+    df[0]=df[0].astype('int')
+    '''
+    input  
+    param  M_i: numbe of component in system 
+    fixed_cluster 
+    data with label index 0~ (finxed_clusters-1) and 26 dimension of data
+    Output:
+    Sigma, tuple, float
+    '''
+    intern_tuple_all=()
+    for k in range(K):
+        internal_tuple_i=()
+        column_number=1
+        for i in range(N):
+            internal_tuple_j=()
+            for j in range(M_i[i]):        
+                 # counting the number in column for indexing
+                internal_list_k_cluster=[]
+                internal_tuple_k_cluster=()
+                for t in range(T_ij[i][j]):
+                    internal_list_k_cluster.append(round(df[df[0]==k].loc[:,column_number].mean(),2))   
+                column_number+=1 
+                internal_tuple_k_cluster=tuple(x for x in internal_list_k_cluster)        
+                internal_tuple_j=internal_tuple_j+(internal_tuple_k_cluster,)
+            internal_tuple_i=internal_tuple_i+(internal_tuple_j,)
+        intern_tuple_all=intern_tuple_all+(internal_tuple_i,)
+              
+    return intern_tuple_all    
+
+def fun_mu_without_k(data,N,M_i,K):
+    M_i=M_i
+    import pandas as pd
+    df=pd.DataFrame(data)
+    df[0]=df[0].astype('int')
+    '''
+    input  
+    param  M_i: numbe of component in system 
+    fixed_cluster 
+    data with label index 0~ (finxed_clusters-1) and 26 dimension of data
+    
+    Output:
+    
+    Sigma, tuple, float
+    '''
+    internal_tuple_i=()
+    column_number=1
+    for i in range(len(M_i)):
+        internal_tuple_j=()
+        for j in range(M_i[i]):        
+             # counting the number in column for indexing
+            internal_list_k_cluster=[]
+            internal_tuple_k_cluster=()
+            for k in range(K):
+                internal_list_k_cluster.append(df[df[0]==k].loc[:,column_number].mean())   
+            column_number+=1 
+            internal_tuple_k_cluster=tuple(x for x in internal_list_k_cluster)        
+            internal_tuple_j=internal_tuple_j+(internal_tuple_k_cluster,)
+        internal_tuple_i=internal_tuple_i+(internal_tuple_j,)
+            #return sigma of data    
+    return internal_tuple_i
+
+
+def fun_nu(data,N,M_i,K):
+    M_i=M_i
+    fixed_clusters=K
+    import pandas as pd
+    df=pd.DataFrame(data)
+    df[0]=df[0].astype('int')
+    '''
+    input  
+    param  M_i: numbe of component in system 
+    fixed_cluster 
+    data with label index 0~ (finxed_clusters-1) and 26 dimension of data
+    
+    Output:
+    
+    Sigma, tuple, float
+    '''
+    internal_tuple_i=()
+    column_number=1
+    for i in range(N):
+        internal_tuple_j=()
+        for j in range(M_i[i]):        
+             # counting the number in column for indexing
+            internal_tuple_k_cluster_all=()
+            for k in range(K):
+                internal_list_k_cluster=round(df[df[0]==k].loc[:,column_number].mean(),2)   
+                internal_tuple_k_cluster=tuple(x for x in [internal_list_k_cluster])        
+                internal_tuple_k_cluster_all=internal_tuple_k_cluster_all+tuple(internal_tuple_k_cluster)
+            column_number+=1 
+            internal_tuple_j=internal_tuple_j+(internal_tuple_k_cluster_all,)
+        internal_tuple_i=internal_tuple_i+(internal_tuple_j,)
+            #return sigma of data    
+    return internal_tuple_i
+
+def fun_nu_epsilon(N,M_i,K):
+    M_i=M_i
+    fixed_clusters=K
+    import pandas as pd
+    '''
+    input  
+    param  M_i: numbe of component in system 
+    fixed_cluster 
+    data with label index 0~ (finxed_clusters-1) and 26 dimension of data
+    
+    Output:
+    
+    Sigma, tuple, float
+    '''
+    internal_tuple_i=()
+    column_number=1
+    for i in range(N):
+        internal_tuple_j=()
+        for j in range(M_i[i]):        
+             # counting the number in column for indexing
+            internal_tuple_k_cluster_all=()
+            for k in range(K):
+                internal_list_k_cluster=0.06
+                internal_tuple_k_cluster=tuple(x for x in [internal_list_k_cluster])        
+                internal_tuple_k_cluster_all=internal_tuple_k_cluster_all+tuple(internal_tuple_k_cluster)
+            column_number+=1 
+            internal_tuple_j=internal_tuple_j+(internal_tuple_k_cluster_all,)
+        internal_tuple_i=internal_tuple_i+(internal_tuple_j,)
+            #return sigma of data    
+    return internal_tuple_i
+
+def fun_Pr_ri(data, D_L):
+    '''
+    Input:
+    data, np.array; float
+    data[i][j], i is system i.
+    while j is the the lifetime data insided.
+    
+    OutPut:
+        ri:probability of ith system less then predefined D_L 
+    '''
+    r=[]
+    #print("the len  of data is")
+    #print(len(data))
+    for i in range(len(data)):
+        z=0
+        for j in (data[i]):
+            if (j <=D_L):
+                z+=1
+                #print(z)
+        #print(z/len(data[i]))
+        print(z)
+        r.append(z/len(data[i]) )
+        #print("len of data i is")
+        #print(len(data[i]))
+    return (r)
+#list print will transder to list as default
+def compute_life(z_ijt,x):
+    internal_list_0=[]
+    for i in range(N):
+        left=sum(z_ijt[i, j_c, t_c]*x[i][j_c][t_c] for j_c in range(M_i_a[i],M_i_c[i]+M_i_a[i]) for t_c in range(T_ij[i][j])) 
+        internal_list_1=[]
+        for j_a in range(M_i_a[i]):
+            internal_list_2=[]
+            for t_a in range(T_ij[i][j_a]):
+                internal_list_2.append(z_ijt[i, j_a,t_a]*x[i][j_a][t_a])
+            internal_list_1.append(max(internal_list_2))
+        right=max(internal_list_1)
+        internal_list_0.append(left+right)
+    return (min(internal_list_0))
+def costcount(c, x):
+    cost_all=0
+    for i in range(N):
+        for j in range(M_i[i]):
+            for t in range(T_ij[i][j]):
+                cost_all=cost_all+c[i][j]*x[i][j][t]
+    return cost_all
+def dic_x_to_tuple_x(dict_x,N,M_i,T_ij):
+    '''
+    input:
+    Dictionary x
+    output:
+    tuple x with format of i,j and t
+    
+    '''
+    x_value= [x0 for x0 in dict_x.values()]
+    
+    internal_index=0
+    internal_tuple_0=()
+    for i  in range(N):
+        internal_tuple_1=()
+        for j in range(M_i[i]):
+            internal_tuple_2=()
+            for t in range(T_ij[i][j]):
+                internal_tuple_2=internal_tuple_2+tuple( int(round(g,0)) for g in [x_value[internal_index]])
+                internal_index=internal_index+1
+            internal_tuple_1=internal_tuple_1+(internal_tuple_2,)
+
+        internal_tuple_0=internal_tuple_0+(internal_tuple_1,)
+    return internal_tuple_0
+
+def compare(a,b):
+    if a>b:
+        cc=1
+    else:
+        cc=0
+    return cc
